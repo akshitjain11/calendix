@@ -1,5 +1,5 @@
 export default function FeaturesPage() {
-    return (
+    return  (
         <div>features</div>
     )
 }
