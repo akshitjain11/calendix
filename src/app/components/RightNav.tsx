@@ -7,7 +7,7 @@ export default function RightNav({email}:{email:string}) {
     if (email && !hasLoggedOut) {
         return (
             <nav className="flex items-center gap-4">
-        <Link href={'/dashboard'} className="bg-blue-600 text-white py-2 px-4 rounded-full">Dashboard</Link>
+        <Link href={'/dashboard'} className="btn-blue">Dashboard</Link>
         <a href={'/api/logout'}>Logout</a>
         </nav>
 
