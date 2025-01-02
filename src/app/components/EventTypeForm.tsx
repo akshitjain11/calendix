@@ -11,6 +11,8 @@ export default function EventTypeForm() {
     const [length,setLength]=useState(30);
 
     return (
+
+        
         <form className="p-2 bg-gray-200 rounded-lg">
             create new event type:
             <div className="grid grid-cols-2 gap-4 ">
