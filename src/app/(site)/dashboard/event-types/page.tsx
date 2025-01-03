@@ -9,7 +9,9 @@ import Link from "next/link";
 
 
 export default async function EventTypesPage() {
-    await mongoose.connect(process.env.MONGODB_URI as string);
+    await mongoose.connect(process.env.MONGODB_URI as string, {
+        serverSelectionTimeoutMS: 30000,  // 30 seconds timeout
+      });
     const email = await session().get('email');
     const eventTypes = await EventTypeModel.find({ email });
 

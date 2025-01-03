@@ -1,4 +1,6 @@
+import { FromTo, WeekdayName } from '@/libs/types';
 import mongoose, {model, models, Schema} from 'mongoose';
+import { EventType } from 'nylas';
 
 
 const FromToSchema = new Schema ({
@@ -6,21 +8,7 @@ const FromToSchema = new Schema ({
     to:String
 })
 
-export type WeekdayName = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
-type EventType = {
-    email:string,
-    title:string,
-    description: string,
-    length: number,
-    bookingTimes: Record<WeekdayName,FromTo>
-}
-
-type FromTo = {
-    from:string,
-    to:string,
-
-}
 
 const BookingSchema = new  Schema<Record<WeekdayName,FromTo>>({
     monday: FromToSchema,

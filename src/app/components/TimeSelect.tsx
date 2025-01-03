@@ -1,4 +1,7 @@
-export default function TimeSelect({ step = 30 }: { step: 30 | 60 }) {
+export default function TimeSelect({ step = 30,value,onChange }: { step: 30 | 60;
+    value:string;
+    onChange: (val:String) => void
+}) {
     const times = [];
     for (let i = 0; i < 24; i++) {
         times.push((i < 10 ? '0' + i : i) + ':00');
@@ -9,7 +12,7 @@ export default function TimeSelect({ step = 30 }: { step: 30 | 60 }) {
 
     return (
         <>
-            <select>
+            <select value={value} onChange={ev =>onChange(ev.target.value)}>
                 {times.map((time, index) => (
                     <option key={index} value={time}>
                         {time}
