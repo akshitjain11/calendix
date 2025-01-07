@@ -5,7 +5,8 @@ import { EventType } from 'nylas';
 
 const FromToSchema = new Schema ({
     from:String,
-    to:String
+    to:String,
+    active:Boolean,
 })
 
 
