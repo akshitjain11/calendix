@@ -1,31 +1,51 @@
 'use client'
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import TimeSelect from "./TimeSelect";
 import { BookingTimes, WeekdayName } from "@/libs/types";
 import clsx from "clsx";
 import axios from "axios";
+import { IEventType } from "@/models/EventType";
+import { redirect, useRouter } from "next/navigation";
+import { Trash } from "lucide-react";
 
 const weekdayNames:WeekdayName[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-export default function EventTypeForm() {
-    const [title,setTitle] = useState('');
-    const [description,setDescription]=useState('');
-    const [length,setLength]=useState(30);
-    const [bookingTimes, setBookingTimes] = useState<BookingTimes>({});
-    async function handleSubmit(ev) {
+export default function EventTypeForm({doc}:{doc?:IEventType}) {
+    const [title,setTitle] = useState(doc?.title || '');
+    const [description,setDescription]=useState(doc?.description || '');
+    const [length,setLength]=useState(doc?.length || 30);
+    const [bookingTimes, setBookingTimes] = useState<BookingTimes>(doc?.bookingTimes || {});
+    const router =useRouter()
+    async function handleSubmit(ev:FormEvent) {
         ev.preventDefault();
-        const response = await axios.post('/api/event-types',{title,description,length,bookingTimes});
-        console.log({response})
+        const id = doc?._id;
+        const request = id ? axios.put : axios.post;
+        const data = {
+            title,description,length,bookingTimes
+        };
+        if (doc?._id) {
+            data._id = doc?._id;
+        }
+        const response = await request('/api/event-types',{...data,id});
+        if (response.data) {
+            router.push('/dashboard/event-types');
+            router.refresh();
+        }
     }
+
     function handleBookingTimeChange(day: WeekdayName, val:string|boolean,prop:'from' | 'to'|'active') {
         setBookingTimes(oldBookingTimes=>{
             const newBookingTimes:BookingTimes = {...oldBookingTimes};
+
             if (!newBookingTimes[day]) {
+
                 newBookingTimes[day]={from:'00:00',to:'00:00',active:false};
 
             }
-            newBookingTimes[day][prop]=val;
+
+            // @ts-ignore
+            newBookingTimes[day][prop]= val;
             return newBookingTimes;
         })
     }
@@ -91,7 +111,11 @@ export default function EventTypeForm() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex gap-4 justify-center">
+                <button type="button" className="btn-red">
+                    <Trash size={16}/> 
+                    Delete
+                </button>
                 <button type="submit" className="btn-blue !px-8">Save</button>
             </div>
         </form>

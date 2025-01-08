@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 export default function RightNav({email}:{email:string}) {
-    const hasLoggedOut=window && window.location.href.includes('logged-out');
+    const hasLoggedOut=typeof window !=='undefined' && window.location.href.includes('logged-out');
     console.log(hasLoggedOut);
     if (email && !hasLoggedOut) {
         return (

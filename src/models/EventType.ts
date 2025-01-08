@@ -1,6 +1,7 @@
+import { BookingTimes } from '@/libs/types';
 import { FromTo, WeekdayName } from '@/libs/types';
-import mongoose, {model, models, Schema} from 'mongoose';
-import { EventType } from 'nylas';
+import mongoose, {Model, model, models, Schema} from 'mongoose';
+
 
 
 const FromToSchema = new Schema ({
@@ -8,6 +9,16 @@ const FromToSchema = new Schema ({
     to:String,
     active:Boolean,
 })
+
+export interface IEventType extends Document {
+    email:string;
+    title:string;
+    description:string;
+    length:number;
+    bookingTimes:BookingTimes;
+    createdAt: Date;
+    updatedAt: Date;
+}
 
 
 
@@ -20,7 +31,7 @@ const BookingSchema = new  Schema<Record<WeekdayName,FromTo>>({
     saturday:FromToSchema,
     sunday:FromToSchema,
 })
-const EventTypeSchema = new Schema<EventType>({
+const EventTypeSchema = new Schema<IEventType>({
     email: String,
     title: String,
     description: String,
@@ -32,4 +43,4 @@ const EventTypeSchema = new Schema<EventType>({
 
 
 
-export const EventTypeModel = models?.EventType || model<EventType>('EventType',EventTypeSchema)
+export const EventTypeModel = models?.EventType as Model<IEventType> || model<IEventType>('EventType',EventTypeSchema)
