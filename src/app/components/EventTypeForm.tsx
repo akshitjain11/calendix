@@ -8,6 +8,9 @@ import axios from "axios";
 import { IEventType } from "@/models/EventType";
 import { redirect, useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
+import EventTypeDelete from "./EventTypeDelete";
+import { Types } from "mongoose";
+
 
 const weekdayNames:WeekdayName[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -54,7 +57,9 @@ export default function EventTypeForm({doc}:{doc?:IEventType}) {
 
         
         <form className="p-2 bg-gray-200 rounded-lg" onSubmit={handleSubmit}>
-            create new event type:
+            {doc && (
+                <p className="my-2 text-sm">URL: http://localhost:3000/username/{doc.uri}</p>
+            )}
             <div className="grid grid-cols-2 gap-4 ">
                 <div>
                     <label>
@@ -112,10 +117,9 @@ export default function EventTypeForm({doc}:{doc?:IEventType}) {
                 </div>
             </div>
             <div className="flex gap-4 justify-center">
-                <button type="button" className="btn-red">
-                    <Trash size={16}/> 
-                    Delete
-                </button>
+                {doc && (
+                     <EventTypeDelete id={doc._id as string} />
+                )}
                 <button type="submit" className="btn-blue !px-8">Save</button>
             </div>
         </form>

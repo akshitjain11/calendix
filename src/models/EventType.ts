@@ -1,6 +1,6 @@
 import { BookingTimes } from '@/libs/types';
 import { FromTo, WeekdayName } from '@/libs/types';
-import mongoose, {Model, model, models, Schema} from 'mongoose';
+import mongoose, {Model, model, models, Schema, Types} from 'mongoose';
 
 
 
@@ -10,8 +10,9 @@ const FromToSchema = new Schema ({
     active:Boolean,
 })
 
-export interface IEventType extends Document {
+export interface IEventType extends mongoose.Document {
     email:string;
+    uri:string;
     title:string;
     description:string;
     length:number;
@@ -33,6 +34,7 @@ const BookingSchema = new  Schema<Record<WeekdayName,FromTo>>({
 })
 const EventTypeSchema = new Schema<IEventType>({
     email: String,
+    uri:{type:String},
     title: String,
     description: String,
     length: Number,
