@@ -1,13 +1,20 @@
 import DashboardNav from "@/app/components/DashboardNav";
-import Link from "next/link";
+import ProfileForm from "@/app/components/ProfileForm";
+import { session } from "@/libs/session";
+import { ProfileModel } from "@/models/Profile";
+import axios from "axios";
+import mongoose from "mongoose";
+import { FormEvent, useState } from "react";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+    const email = await session().get('email');
+    mongoose.connect(process.env.MONGODB_URI as string);
+    const profileDoc = await ProfileModel.findOne({email})
     return (
-        <>
-        <DashboardNav />
         <div>
-            booked events listed here
+        <ProfileForm existingUsername={profileDoc?.username || ""}/>
+       
+
         </div>
-        </>
     )
 }

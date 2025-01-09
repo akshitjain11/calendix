@@ -3,6 +3,7 @@ import DashboardNav from "@/app/components/DashboardNav";
 import EventTypeForm from "@/app/components/EventTypeForm";
 import { session } from "@/libs/session";
 import { IEventType, EventTypeModel } from "@/models/EventType";
+import { ProfileModel } from "@/models/Profile";
 import { Plus } from "lucide-react";
 import mongoose from "mongoose";
 import Link from "next/link";
@@ -14,10 +15,10 @@ export default async function EventTypesPage() {
       });
     const email = await session().get('email');
     const eventTypes = await EventTypeModel.find({ email });
+    const profile = await ProfileModel.findOne({email});
 
     return (
         <div>
-            <DashboardNav />
             <div className="mt-4 border border-b-0 rounded-xl overflow-hidden mb-4">
                 {eventTypes.map(et=>(
                     <div className="block p-2 border-b">
@@ -25,7 +26,7 @@ export default async function EventTypesPage() {
                     {et.title}
                     </Link>
                     <span className="text-gray-400 ml-4 text-sm">
-                        http:://localhost:3000/username/{et.uri}
+                        {process.env.NEXT_PUBLIC_URL}/{profile.username}/{et.uri}
                     </span>
                     </div>
                 ))}

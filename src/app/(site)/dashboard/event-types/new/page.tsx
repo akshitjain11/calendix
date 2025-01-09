@@ -5,7 +5,6 @@ import Link from "next/link";
 export default function NewEventTypePage() {
     return (
         <div>
-            <DashboardNav />
             <div className="mt-4">
             <EventTypeForm />
             </div>
