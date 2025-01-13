@@ -3,6 +3,7 @@ import { ProfileModel } from "@/models/Profile";
 import background from '.';
 import mongoose from "mongoose";
 import { Clock, Info } from "lucide-react";
+import TimePicker from "@/app/components/TimePicker";
 
 
 type PageProps = {
@@ -40,7 +41,7 @@ export default async function BookingPage(props:PageProps) {
                     </div>
                 </div>
                 <div className="bg-white/80 grow p-8">
-                    right
+                    <TimePicker bookingTimes={JSON.parse(JSON.stringify(etDoc.bookingTimes))}/>
                 </div>
             </div>
             </div>

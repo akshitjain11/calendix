@@ -10,9 +10,9 @@ import { redirect, useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import EventTypeDelete from "./EventTypeDelete";
 import { Types } from "mongoose";
+import { weekdayNames } from "@/libs/shared";
 
 
-const weekdayNames:WeekdayName[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 export default function EventTypeForm({doc,username}:{doc?:IEventType,username?:string}) {
     const [title,setTitle] = useState(doc?.title || '');
