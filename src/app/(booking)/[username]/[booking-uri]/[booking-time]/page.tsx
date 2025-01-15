@@ -21,7 +21,7 @@ export default function BookingFormPage(props:PageProps) {
     const bookingTime = new Date(decodeURIComponent(props.params["booking-time"]))
     async function handleFormSubmit(ev:FormEvent) {
         ev.preventDefault();
-        const data = {guestName,guestEmail,guestNotes,username,bookingUri };
+        const data = {guestName,guestEmail,guestNotes,username,bookingUri,bookingTime};
         const response = await axios.post('/api/bookings',data);
         setConfirmed(true);
 
