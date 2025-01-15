@@ -3,17 +3,22 @@ import { weekdayNames, weekdayShortNames } from "@/libs/shared"
 import { BookingTimes, WeekdayName } from "@/libs/types"
 import clsx from "clsx";
 import { addDays, addMinutes, addMonths, format, getDay, isBefore, isEqual, isFuture, isLastDayOfMonth, isToday, subMonths } from "date-fns";
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Book, ChevronLeft, ChevronRight } from "lucide-react"
+import Link from "next/link";
 import { useState } from "react";
 
 export default function TimePicker(
     
     {
         bookingTimes,
-        length
+        length,
+        meetingURI,
+        username
     }:{
         bookingTimes:BookingTimes
-        length:number
+        length:number;
+        meetingURI:string,
+        username:string,
     }
 ) {
     const currentDate = new Date();
@@ -84,8 +89,8 @@ export default function TimePicker(
 
 
     return (
-        <div className="flex gap-10">
-            <div className="">
+        <div className="flex">
+            <div className="p-8">
                 <div className="flex items-center">
                     <span className="grow">{format(new Date(activeYear,activeMonthIndex,1),"MMMM")} {activeYear}</span>
 
@@ -130,19 +135,22 @@ export default function TimePicker(
                 </div>
             </div>
             {selectedDay && (
-                 <div className="">
-                    <p>
+                 <div className="pt-8 pl-2 overflow-auto pr-8 w-48">
+                    <p className="text-left text-sm">
                     {format(selectedDay,"EEEE, MMMM d")}
                     </p>
                  
-                 <div className="grid gap-1 mt-2 max-h-52 overflow-auto">
+                 <div className="grid gap-2 mt-2 max-h-52">
                  {bookingHours.map(bookingTimes=>(
                      <div>
-                         <button className="w-full block border-2 rounded-lg border-blue-600 text-blue-600 font-bold">
-                             {format(bookingTimes,'HH:mm')}
-                         </button>
+                         <Link 
+                            href={`/${username}/${meetingURI}/${bookingTimes.toISOString()}`}
+                            className="w-full block border-2 rounded-lg border-blue-600 text-blue-600 font-bold">
+                            {format(bookingTimes,'HH:mm')}
+                         </Link>
                      </div>
                  ))}
+                 <div className="mb-8">&nbsp;</div>
                  </div>
      
                  
