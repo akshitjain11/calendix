@@ -1,11 +1,15 @@
 'use client'
 import { weekdayNames, weekdayShortNames } from "@/libs/shared"
 import { BookingTimes, WeekdayName } from "@/libs/types"
+import { nylas } from "@/libs/nylas";
+
+import axios from "axios";
 import clsx from "clsx";
-import { addDays, addMinutes, addMonths, format, getDay, isBefore, isEqual, isFuture, isLastDayOfMonth, isToday, subMonths } from "date-fns";
+import { addDays, addMinutes, addMonths, endOfDay, format, getDay, isBefore, isEqual, isFuture, isLastDayOfMonth, isToday, startOfDay, subMonths } from "date-fns";
 import { Book, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TimeSlot } from "nylas";
 
 export default function TimePicker(
     
@@ -26,6 +30,20 @@ export default function TimePicker(
     const [activeMonthIndex,setActiveMonthIndex]= useState(activeMonthDate.getMonth());
     const [activeYear,setActiveYear]=useState(activeMonthDate.getFullYear());
     const [selectedDay,setSelectedDay]=useState<null|Date>(null);
+    const [busySlots,setBusySlots] = useState<TimeSlot[]>([]);
+
+    useEffect(()=> {
+        if (selectedDay) {
+            setBusySlots([]);
+            const params = new URLSearchParams();
+            params.set('username',username);
+            params.set('from',startOfDay(selectedDay).toISOString());
+            params.set('to',endOfDay(selectedDay).toISOString())
+            axios.get(`/api/busy?`+params.toString()).then(response=>{
+                setBusySlots(response.data);
+            })
+        }
+    },[selectedDay])
     const firstDayOfCurrentMonth = new Date(activeYear,activeMonthIndex,1)
     const firstDayOfCurrentMonthWeekdayIndex=getDay(firstDayOfCurrentMonth);
     const emptyDaysCount = firstDayOfCurrentMonthWeekdayIndex===0 
